@@ -4,7 +4,8 @@ import traci
 import math
 
 # Connect to the local Ethereum node
-w3 = Web3(HTTPProvider('http://localhost:7545'))
+#w3 = Web3(HTTPProvider('http://localhost:7545'))
+w3 = Web3(HTTPProvider('https://rpcapi.fantom.network'))
 
 # Load the contract ABI
 with open('SmartContract.abi') as f:
@@ -71,7 +72,14 @@ while traci.simulation.getMinExpectedNumber() > 0:
         next_edge_vehicles = tuple(filter(lambda x: x not in remove_obstacles, list(next_edge_vehicles)))
         next_edge_vehicles_arr=list(map(str,next_edge_vehicles))
 
-        tx_hash = contract.functions.updateVehicleInfo(vehicle_id, speed,route_arr,current_edge_id,route_index,next_edge,next_edge_vehicles_arr).transact({'from': w3.eth.accounts[0], 'gas': 1000000})
+        from_address='0xa7a360EF3991bC6D3BD0Aaa2FC678A7ECB497f26'
+        try:
+            transaction_count = w3.eth.getTransactionCount(from_address)
+            print(transaction_count)
+            print("Account is unlocked.")
+        except:
+            print("Account is locked or inaccessible.")
+        tx_hash = contract.functions.updateVehicleInfo(vehicle_id, speed,route_arr,current_edge_id,route_index,next_edge,next_edge_vehicles_arr).transact({'from': from_address, 'gas': 1000000})
         print('Transaction hash:', tx_hash.hex())
 
         # Wait for the transaction to be mined
