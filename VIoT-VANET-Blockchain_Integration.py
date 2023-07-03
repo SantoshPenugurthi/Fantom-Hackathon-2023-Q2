@@ -3,7 +3,7 @@ import json
 import traci
 import math
 
-# Connect to the local Ethereum node
+# Connect to the Fantom Mainnet
 #w3 = Web3(HTTPProvider('http://localhost:7545'))
 w3 = Web3(HTTPProvider('https://rpcapi.fantom.network'))
 
