@@ -1,10 +1,13 @@
 from web3 import Web3, HTTPProvider
+from web3.middleware import geth_poa_middleware
 import json
 import traci
 import math
 
 # Connect to the Fantom Mainnet
 w3 = Web3(HTTPProvider('https://rpcapi.fantom.network'))
+w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+
 
 # Load the contract ABI
 with open('SmartContract.abi') as f:
